@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TTT FeralLabs CJS</title>
+    </head>
+    <body>
+        <h1>Text to Protein Converter - by CJS</h1>
+
+        <!-- Text to Full-Monty-Code and Amino Acids -->
+        <h2>Convert Text to DNA Bases and Amino Acids</h2>
+        <input type="text" id="inputText" placeholder="Enter text to convert" />
+        <button onclick="convertToFullMontyCode()">
+            Convert to Bases and Amino Acids
+        </button>
+        <h3>Converted DNA Bases</h3>
+        <p><strong>DNA Bases:</strong> <span id="outputText"></span></p>
+        <h3>Converted Amino Acids (Single Letters)</h3>
+        <p><strong>Amino Acids:</strong> <span id="aminoAcidsOutput"></span></p>
+
+        <!-- DNA Bases to Text -->
+        <h2>Convert DNA Bases to Text</h2>
+        <input
+            type="text"
+            id="dnaBaseInput"
+            placeholder="Enter DNA bases to convert"
+        />
+        <button onclick="convertDNAtoText()">Convert to Text</button>
+        <h3>Converted Text</h3>
+        <p>
+            <strong>Original Text:</strong>
+            <span id="originalTextOutput"></span>
+        </p>
+
+        <script>
+            // Full Monty-Code Table
+            const defaultMontyCodeTable = {
+                C: "TTT",
+                "#": "TTC",
+                Q: "TTA",
+                V: "TTG",
+                O: "TCT",
+                U: "TCC",
+                H: "TCA",
+                "@": "TCG",
+                7: "TAT",
+                G: "TAC",
+                ";": "TGT",
+                N: "TGC",
+                Z: "TGG",
+                1: "CTT",
+                "\\": "CTC",
+                R: "CTA",
+                I: "CTG",
+                "+": "CCT",
+                "-": "CCC",
+                "=": "CCA",
+                ")": "CCG",
+                Y: "CAT",
+                "/": "CAC",
+                M: "CAA",
+                ":": "CAG",
+                O: "CGT",
+                8: "CGC",
+                ".": "CGA",
+                "<": "CGG",
+                D: "ATT",
+                $: "ATC",
+                " ": "ATA",
+                "*": "ATG",
+                2: "ACT",
+                "&": "ACC",
+                P: "ACA",
+                "[": "ACG",
+                3: "AAT",
+                L: "AAC",
+                A: "AAA",
+                T: "AAG",
+                B: "AGT",
+                ">": "AGC",
+                4: "AGA",
+                "]": "AGG",
+                J: "GTT",
+                W: "GTC",
+                9: "GTA",
+                ",": "GTG",
+                S: "GCT",
+                6: "GCC",
+                K: "GCA",
+                5: "GCG",
+                "%": "GAT",
+                "(": "GAC",
+                "'": "GAA",
+                "!": "GAG",
+                X: "GGT",
+                F: "GGC",
+                '"': "GGA",
+                E: "GGG",
+            };
+
+            const codonToAminoAcid = {
+                AAA: "K",
+                AAC: "N",
+                AAG: "K",
+                AAU: "N",
+                ACA: "T",
+                ACC: "T",
+                ACG: "T",
+                ACU: "T",
+                AGA: "R",
+                AGC: "S",
+                AGG: "R",
+                AGU: "S",
+                AUA: "I",
+                AUC: "I",
+                AUG: "M",
+                AUU: "I",
+                CAA: "Q",
+                CAC: "H",
+                CAG: "Q",
+                CAU: "H",
+                CCA: "P",
+                CCC: "P",
+                CCG: "P",
+                CCU: "P",
+                CGA: "R",
+                CGC: "R",
+                CGG: "R",
+                CGU: "R",
+                CUA: "L",
+                CUC: "L",
+                CUG: "L",
+                CUU: "L",
+                GAA: "E",
+                GAC: "D",
+                GAG: "E",
+                GAU: "D",
+                GCA: "A",
+                GCC: "A",
+                GCG: "A",
+                GCU: "A",
+                GGA: "G",
+                GGC: "G",
+                GGG: "G",
+                GGU: "G",
+                GUA: "V",
+                GUC: "V",
+                GUG: "V",
+                GUU: "V",
+                UAA: "*",
+                UAC: "Y",
+                UAG: "*",
+                UAU: "Y",
+                UCA: "S",
+                UCC: "S",
+                UCG: "S",
+                UCU: "S",
+                UGA: "*",
+                UGC: "C",
+                UGG: "W",
+                UGU: "C",
+                UUA: "L",
+                UUC: "F",
+                UUG: "L",
+                UUU: "F",
+            };
+
+            //Function to convert to uppercase
+            function convertToUpperCase(str) {
+                return str.toUpperCase();
+            }
+
+            // Function to convert text into DNA bases and amino acids
+            function convertToFullMontyCode() {
+                const inputText = document.getElementById("inputText").value;
+                let outputText = "";
+                let aminoAcids = "";
+                let upperCaseString = convertToUpperCase(inputText);
+                for (let char of upperCaseString) {
+                    if (char in defaultMontyCodeTable) {
+                        outputText += defaultMontyCodeTable[char];
+                    } else {
+                        outputText += "???"; // Handle unrecognized characters
+                    }
+                }
+                // Reverse Monty-Code Tables for DNA bases to text conversion
+                const codonToCharacter = {};
+                for (let char in defaultMontyCodeTable) {
+                    codonToCharacter[defaultMontyCodeTable[char]] = char;
+                }
+
+                // Convert DNA bases to amino acids (single-letter codes) after replacing T with U (for RNA)
+                const rnaBases = outputText.replace(/T/g, "U");
+                for (let i = 0; i < rnaBases.length; i += 3) {
+                    let codon = rnaBases.slice(i, i + 3);
+                    aminoAcids += codonToAminoAcid[codon] || "?";
+                }
+
+                document.getElementById("outputText").innerText = outputText;
+                document.getElementById("aminoAcidsOutput").innerText =
+                    aminoAcids;
+            }
+
+            // Function to convert DNA bases back to text
+            function convertDNAtoText() {
+                const dnaBaseInput =
+                    document.getElementById("dnaBaseInput").value;
+                let originalText = "";
+
+                // Create reverse mapping of DNA codons to characters
+                const codonToCharacter = {};
+                for (let char in defaultMontyCodeTable) {
+                    codonToCharacter[defaultMontyCodeTable[char]] = char;
+                }
+
+                for (let i = 0; i < dnaBaseInput.length; i += 3) {
+                    let coded = dnaBaseInput.slice(i, i + 3);
+                    if (coded in codonToCharacter) {
+                        originalText += codonToCharacter[coded];
+                    } else {
+                        originalText += "?"; // Handle unrecognized codons
+                    }
+                }
+
+                document.getElementById("originalTextOutput").innerText =
+                    originalText.trim();
+            }
+        </script>
+    </body>
+</html>
