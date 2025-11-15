@@ -9,25 +9,18 @@
         <h1>Text to DNA/Protein Converter - by CJS</h1>
         <a href="https://dnanano.art/"> dnanano.art</a> <br>
         <a href="https://alphafoldserver.com/"> alphafold</a> <br>
+        <a href="https://proteinbase.com/proteins?pageSize=96&proteinCategory=miniprotein"> ProteinBase </a> <br>
         <!-- Text to Full-Monty-Code and Amino Acids -->
         <h2>Convert Text to DNA Bases and Amino Acids</h2>
         <input type="text" id="inputText" placeholder="Enter text to convert" />
         <button onclick="convertToFullMontyCode()">
             Convert to Bases and Amino Acids
         </button>
-        <h3>Converted DNA Bases</h3>
-        <p><strong>DNA Bases:</strong> <span id="outputText"></span></p>
-        <h3>Converted Amino Acids (Single Letters)</h3>
-        <p><strong>Amino Acids:</strong> <span id="aminoAcidsOutput"></span></p>
-
-
-
-        
+        <h3>Converted Results</h3>
         <p><strong>Text:</strong> <span id="ogText"></span></p>
         <p><strong>DNA Bases:</strong> <span id="outputText"></span></p>
         <p><strong>Amino Acids:</strong> <span id="aminoAcidsOutput"></span></p>
 
-        
         <!-- DNA Bases to Text -->
         <h2>Convert DNA Bases to Text</h2>
         <input
@@ -207,9 +200,9 @@
                     aminoAcids += codonToAminoAcid[codon] || "?";
                 }
 
+                document.getElementById("ogText").innerText = ogText;
                 document.getElementById("outputText").innerText = outputText;
-                document.getElementById("aminoAcidsOutput").innerText =
-                    aminoAcids;
+                document.getElementById("aminoAcidsOutput").innerText = aminoAcids;
             }
 
             // Function to convert DNA bases back to text
