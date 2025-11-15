@@ -23,7 +23,7 @@
 
 
         
-        <p><strong>Amino Acids:</strong> <span id="inputText"></span></p>
+        <p><strong>Text:</strong> <span id="ogText"></span></p>
         <p><strong>DNA Bases:</strong> <span id="outputText"></span></p>
         <p><strong>Amino Acids:</strong> <span id="aminoAcidsOutput"></span></p>
 
@@ -183,6 +183,7 @@
             // Function to convert text into DNA bases and amino acids
             function convertToFullMontyCode() {
                 const inputText = document.getElementById("inputText").value;
+                let ogText = inputText;
                 let outputText = "";
                 let aminoAcids = "";
                 let upperCaseString = convertToUpperCase(inputText);
